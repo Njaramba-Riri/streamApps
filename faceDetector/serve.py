@@ -1,11 +1,12 @@
-import streamlit as st
+import os
+import tempfile
 import numpy as np
 from PIL import Image
 import cv2 as cv
-import tempfile
-import os
+import streamlit as st
+from streamlit_webrtc import webrtc_streamer
 
-from cafFace import real_timeDetection, detect_faces
+from cafFace import real_timeDetection, detect_faces, VideoTransformer
 
 cd = os.getcwd()
 default = os.path.join(cd, 'data/videos/faces1.mp4')
@@ -25,7 +26,7 @@ if option == "----- Select One ------":
         st.rerun()
 
 elif option == "Camera":
-    real_timeDetection()
+    webrtc_streamer(key="face-detection", video_processor_factory=VideoTransformer)
     
 elif option == "Upload Image":
     uploaded_file = st.file_uploader("Choose an image...", type=['jpg', 'png', 'jpeg'])

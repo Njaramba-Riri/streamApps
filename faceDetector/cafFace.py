@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import cv2 as cv
 import streamlit as st
-
+from streamlit_webrtc import VideoProcessorBase
 
 cd = os.getcwd()
 model = os.path.join(cd, "models/res10_300x300_ssd_iter_140000.caffemodel")
@@ -20,6 +20,46 @@ model = cv.dnn.readNetFromCaffe(prototxt=proto,
 dim = 300
 mean = [104, 177, 123]
 conf_thresh = 0.2
+
+
+class VideoTransformer(VideoProcessorBase):
+    def transform(self, img):
+        stframe = st.empty()
+        frames = []    
+        frame = img.to_ndarray(format="bgr24")    
+        frame = cv.flip(frame, 1)
+        frame_height = frame.shape[0]
+        frame_width = frame.shape[1]
+        
+        blob = cv.dnn.blobFromImage(frame, 0.5, (dim, dim), mean, swapRB=False, crop=False)
+        
+        model.setInput(blob=blob)
+        detections = model.forward()
+        
+        for i in range(detections.shape[2]):
+            confidence = detections[0, 0, i, 2]
+            if confidence > conf_thresh:
+                x_bottom_left = int(detections[0, 0, i, 3] * frame_width)
+                y_bottom_left = int(detections[0, 0, i, 4] * frame_height)
+                x_top_right   = int(detections[0, 0, i, 5] * frame_width)
+                y_top_right   = int(detections[0, 0, i, 6] * frame_height)
+                
+                cv.rectangle(frame, (x_bottom_left, y_bottom_left), (x_top_right, y_top_right), (255, 117, 234), 2)
+                
+                label = "Confidence: {:.2f}%".format(confidence * 100)
+                label_size, baseline = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, .5, 2)
+                cv.rectangle(frame, (x_bottom_left, y_bottom_left - label_size[1]),
+                            (x_bottom_left + label_size[0], y_bottom_left + baseline), (255, 255, 243), cv.FILLED)
+                cv.putText(frame, label, (x_bottom_left, y_bottom_left), cv.FONT_HERSHEY_SIMPLEX,
+                        .5, (0, 0, 0), 1)
+                
+        t, _ = model.getPerfProfile()
+        label = "Inference time: %.2f ms" % (t * 1000 / cv.getTickFrequency())
+        cv.putText(frame, label, (5, 15), cv.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255))
+        frames.append(frame)
+        stframe.image(frame, "Say Cheese", channels="BGR")
+        
+        return frame
 
 def detect_faces(img):
     image = np.array(img)
@@ -50,6 +90,9 @@ def real_timeDetection(model=model, source=s):
     frames = []
     frame_dict = {}
     
+    if not cap.isOpened():
+        st.error("There a problem while trying to access your webcam.")   
+         
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:

@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
 import streamlit as st
+from streamlit_webrtc import VideoProcessorBase
 
 cd = os.getcwd()
 
@@ -79,9 +80,13 @@ def display_objects(img, objects, threshold=0.3, show=False):
     
     return img
 
+
 def detect_video(source=s, flip=False):
     cap = cv.VideoCapture(source)
     stframe = st.empty()
+    if not cap.isOpened():
+        st.error("There was an error trying to open your webcam.")
+        
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
