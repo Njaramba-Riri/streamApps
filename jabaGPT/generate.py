@@ -3,8 +3,8 @@ import numpy as np
 import tensorflow as tf
 import streamlit as st
 
-tf.random.set_seed(1)
-np.random.seed(7)
+# tf.random.set_seed(1)
+# np.random.seed(7)
 
 cd = os.getcwd()
 
@@ -80,6 +80,7 @@ def generate_text(default_model=True, prompt_str=None, text_len=random,
         encoded_input = encoded_input[:, -max_input_length:]
         
         height = len(generated_str) // 3
+        
         text.text_area(f"Generated text: { len(generated_str) } of {random + len(prompt_str)}", generated_str, height=height)
     
     return generated_str
