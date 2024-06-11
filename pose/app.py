@@ -11,7 +11,7 @@ image_path = os.path.join(cd, 'data/images/Tiger_Woods_crop.png')
 
 st.set_page_config(page_title="Pose Estimator")
 st.title("Pose Estimator: Draw Skeleton Masks on Image Frames.")
-st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/thumb_up:")
+st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/globe:")
 
 st.text("For better results, upload images with only one person.")
 

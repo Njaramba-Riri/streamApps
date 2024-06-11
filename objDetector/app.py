@@ -14,7 +14,7 @@ file = os.path.join(cd, 'data/images/street.jpg')
 st.set_page_config(page_title="Object Detector")
 
 st.title("Object Detector: Identify objects in image or video frames.")
-st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/thumb_up:")
+st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/globe:")
 st.text("This model is capable of detecting 92 different classes.")
 
 option = st.selectbox("Select a file type to upload", ("--------------------", "Image", "Video", "Camera"))

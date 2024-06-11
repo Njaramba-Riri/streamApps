@@ -1,5 +1,6 @@
 import os
 import sys
+import requests
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv

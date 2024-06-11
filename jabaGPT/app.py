@@ -4,7 +4,7 @@ from generate import generate_text
 st.set_page_config(page_title="LangGPT")
 
 st.title("Limpueza: A custom RNN that generates text.")
-st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/thumb_up:")
+st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/globe:")
 st.text("Prompt the model with a custom text.")
 
 options = st.radio('Select model', ('Model 1', 'Model 2'))

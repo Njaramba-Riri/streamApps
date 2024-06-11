@@ -13,7 +13,7 @@ default = os.path.join(cd, 'data/videos/faces1.mp4')
 st.set_page_config(page_title="Face Detector")
 
 st.title("Real-Time Face Detection: Capture faces in image or video frames.")
-st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/thumb_up:")
+st.page_link("https://ririnjaramba.onrender.com", label=":blue-background[Developer Portfolio]", icon=":material/globe:")
 st.text("Pro-tip: Try it with your webcam.")
 
 option = st.selectbox("Choose Input Type", ("----- Select One ------", "Camera", "Upload Video", "Upload Image"))
